@@ -89,31 +89,31 @@
         // Carrega o cardápio completo automaticamente assim que a página abre
         window.onload = () => carregarCardapio('/api/cardapio');
         function cadastrarProduto() {
-    const nome = document.getElementById('novoNome').value;
-    const categoria = document.getElementById('novaCategoria').value;
-    const preco = parseFloat(document.getElementById('novoPreco').value);
-
-    // Verificação básica para evitar envios em branco
-    if(!nome || isNaN(preco)) {
-        alert("Preencha todos os campos corretamente.");
-        return;
-    }
-
-    const novoProduto = { nome, categoria, preco };
-
-    fetch('/api/cardapio', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(novoProduto)
-    })
-    .then(resposta => resposta.json())
-    .then(dados => {
-        alert("Produto cadastrado com sucesso!");
-        carregarCardapio('/api/cardapio'); // Atualiza a tela
-    });
-}
+            const nome = document.getElementById('novoNome').value;
+            const categoria = document.getElementById('novaCategoria').value;
+            const preco = parseFloat(document.getElementById('novoPreco').value);
+        
+            // Verificação básica para evitar envios em branco
+            if(!nome || isNaN(preco)) {
+                alert("Preencha todos os campos corretamente.");
+                return;
+            }
+        
+            const novoProduto = { nome, categoria, preco };
+        
+            fetch('/api/cardapio', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(novoProduto)
+            })
+            .then(resposta => resposta.json())
+            .then(dados => {
+                alert("Produto cadastrado com sucesso!");
+                carregarCardapio('/api/cardapio'); // Atualiza a tela
+            });
+        }
     </script>
 </body>
 </html>
