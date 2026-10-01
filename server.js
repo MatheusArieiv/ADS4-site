@@ -1,7 +1,7 @@
 //1.Importando o framework e iniciando a aplicação
 const express = require ('express');
 const app = express();
-const port = 3000;
+process.env.PORT || 3000;
 
 
 //2. Avisando ao Express onde estão os arquivos visuais (HTML/CSS)
