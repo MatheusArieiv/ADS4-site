@@ -5,122 +5,252 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nosso Cardápio Dinâmico</title>
     <link rel="stylesheet" href="style.css">
-
-<div class="cadastro-form">
-    <h3>Cadastrar Novo Item</h3>
-    <input type="text" id="novoNome" placeholder="Nome do Produto">
-    <select id="novaCategoria">
-        <option value="Lanche">Lanche</option>
-        <option value="Bebida">Bebida</option>
-        <option value="Acompanhamento">Acompanhamento</option>
-    </select>
-    <input type="number" id="novoPreco" placeholder="Preço (R$)">
-    <button onclick="cadastrarProduto()">Salvar Produto</button>
-</div>
 </head>
+
 <body>
-    
+
+    <!-- Formulário para cadastrar novos produtos -->
+    <div class="cadastro-form">
+        <h3>Cadastrar Novo Item</h3>
+
+        <input
+            type="text"
+            id="novoNome"
+            placeholder="Nome do Produto"
+        >
+
+        <select id="novaCategoria">
+            <option value="Lanche">Lanche</option>
+            <option value="Bebida">Bebida</option>
+            <option value="Acompanhamento">Acompanhamento</option>
+        </select>
+
+        <input
+            type="number"
+            id="novoPreco"
+            placeholder="Preço (R$)"
+            step="0.01"
+        >
+
+        <button onclick="cadastrarProduto()">
+            Salvar Produto
+        </button>
+    </div>
+
     <div class="container">
+
         <header>
             <h1>🍔 Lanchonete Full-Stack</h1>
-            <p>Este cardápio está sendo gerado dinamicamente pela nossa API Node.js!</p>
-            
+
+            <p>
+                Este cardápio está sendo gerado dinamicamente
+                pela nossa API Node.js!
+            </p>
+
             <!-- Botões para interagir com o Back-end -->
             <div class="filtros">
-                <button onclick="carregarCardapio('/api/cardapio')">Todos os Itens</button>
-                <button onclick="carregarCardapio('/api/cardapio/bebidas')" class="btn-desafio">Apenas Bebidas (Desafio)</button>
+                <button onclick="carregarCardapio('/api/cardapio')">
+                    Todos os Itens
+                </button>
+
+                <button
+                    onclick="carregarCardapio('/api/cardapio/bebidas')"
+                    class="btn-desafio"
+                >
+                    Apenas Bebidas (Desafio)
+                </button>
             </div>
         </header>
 
-        <!-- Aqui é onde os lanches vão aparecer -->
+        <!-- Aqui os produtos serão exibidos -->
         <main id="vitrine-cardapio">
-            <p class="loading">Carregando dados do servidor...</p>
+            <p class="loading">
+                Carregando dados do servidor...
+            </p>
         </main>
+
     </div>
 
     <script>
-    
+
         // Função para buscar e renderizar os dados do Node.js
         function carregarCardapio(url) {
-            const vitrine = document.getElementById('vitrine-cardapio');
-            vitrine.innerHTML = '<p class="loading">Buscando dados no servidor...</p>';
 
-            // O fetch faz o pedido ao nosso Garçom (API)
+            const vitrine = document.getElementById('vitrine-cardapio');
+
+            vitrine.innerHTML =
+                '<p class="loading">Buscando dados no servidor...</p>';
+
             fetch(url)
+
                 .then(resposta => {
-                    // Se a rota der erro (Ex: 404), tratamos aqui
+
+                    // Verifica se a rota retornou erro
                     if (!resposta.ok) {
-                        throw new Error('Rota não encontrada. Você já resolveu o desafio final no server.js?');
+                        throw new Error(
+                            'Rota não encontrada. Você já resolveu o desafio final no server.js?'
+                        );
                     }
-                    return resposta.json(); // Transforma a resposta em formato utilizável
+
+                    return resposta.json();
                 })
+
                 .then(dados => {
+
                     // Limpa a tela
                     vitrine.innerHTML = '';
 
-                    // Se a lista vier vazia
+                    // Se não houver produtos
                     if (dados.length === 0) {
-                        vitrine.innerHTML = '<p>Nenhum item encontrado.</p>';
+                        vitrine.innerHTML =
+                            '<p>Nenhum item encontrado.</p>';
                         return;
                     }
 
-                    // Percorre os dados e cria os elementos HTML dinamicamente
+                    // Percorre os produtos
                     dados.forEach(item => {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        
-                        // Formata o número para exibir como Moeda (R$)
-                        const precoFormatado = item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-                        // Monta o visual do produto
+                        const card = document.createElement('div');
+
+                        card.className = 'card';
+
+                        // Formata o preço para Real brasileiro
+                        const precoFormatado =
+                            item.preco.toLocaleString(
+                                'pt-BR',
+                                {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }
+                            );
+
+                        // Monta o card do produto
                         card.innerHTML = `
-                            <div class="categoria">${item.categoria}</div>
-                            <h2>${item.nome}</h2>
-                            <div class="preco">${precoFormatado}</div>
+                            <div class="categoria">
+                                ${item.categoria}
+                            </div>
+
+                            <h2>
+                                ${item.nome}
+                            </h2>
+
+                            <div class="preco">
+                                ${precoFormatado}
+                            </div>
                         `;
-                        
-                        // Adiciona o produto na tela
+
+                        // Adiciona o card à vitrine
                         vitrine.appendChild(card);
                     });
                 })
+
                 .catch(erro => {
-                    // Exibe a mensagem de erro na tela de forma amigável
-                    vitrine.innerHTML = `<p class="erro">❌ Ops! ${erro.message}</p>`;
+
+                    vitrine.innerHTML = `
+                        <p class="erro">
+                            ❌ Ops! ${erro.message}
+                        </p>
+                    `;
+
                 });
         }
 
-        // Carrega o cardápio completo automaticamente assim que a página abre
-        window.onload = () => carregarCardapio('/api/cardapio');
 
-    function cadastrarProduto() {
-    const nome = document.getElementById('novoNome').value;
-    const categoria = document.getElementById('novaCategoria').value;
-    const preco = parseFloat(document.getElementById('novoPreco').value);
+        // Função para cadastrar um novo produto
+        function cadastrarProduto() {
 
-    // Verificação básica para evitar envios em branco
-    if(!nome || isNaN(preco)) {
-        alert("Preencha todos os campos corretamente.");
-        return;
-    }
+            const nome =
+                document.getElementById('novoNome').value;
 
-    const novoProduto = { nome, categoria, preco };
+            const categoria =
+                document.getElementById('novaCategoria').value;
 
-    fetch('/api/cardapio', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(novoProduto)
-    })
-    .then(resposta => resposta.json())
-    .then(dados => {
-        alert("Produto cadastrado com sucesso!");
-        carregarCardapio('/api/cardapio'); // Atualiza a tela
-    });
-}
-        
+            const preco =
+                parseFloat(
+                    document.getElementById('novoPreco').value
+                );
+
+
+            // Verificação básica
+            if (!nome || isNaN(preco)) {
+
+                alert(
+                    "Preencha todos os campos corretamente."
+                );
+
+                return;
+            }
+
+
+            // Cria o objeto do novo produto
+            const novoProduto = {
+                nome,
+                categoria,
+                preco
+            };
+
+
+            // Envia o produto para a API
+            fetch('/api/cardapio', {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(novoProduto)
+
+            })
+
+            .then(resposta => {
+
+                if (!resposta.ok) {
+                    throw new Error(
+                        'Erro ao cadastrar o produto.'
+                    );
+                }
+
+                return resposta.json();
+
+            })
+
+            .then(dados => {
+
+                alert(
+                    "Produto cadastrado com sucesso!"
+                );
+
+                // Limpa os campos
+                document.getElementById('novoNome').value = '';
+
+                document.getElementById('novoPreco').value = '';
+
+                // Atualiza o cardápio
+                carregarCardapio('/api/cardapio');
+
+            })
+
+            .catch(erro => {
+
+                alert(
+                    "Erro ao cadastrar produto: " +
+                    erro.message
+                );
+
+            });
+        }
+
+
+        // Carrega o cardápio automaticamente
+        // quando a página abrir
+        window.onload = () => {
+
+            carregarCardapio('/api/cardapio');
+
+        };
+
     </script>
- 
-    
+
 </body>
 </html>
