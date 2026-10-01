@@ -12,12 +12,60 @@ body {
     padding: 20px;
 }
 
+/* ================================
+   FORMULÁRIO DE CADASTRO
+   ================================ */
+
+.cadastro-form {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 40px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.cadastro-form h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.cadastro-form input,
+.cadastro-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.cadastro-form input:focus,
+.cadastro-form select:focus {
+    border-color: #3498db;
+}
+
+.cadastro-form button {
+    width: 100%;
+}
+
+/* ================================
+   CONTAINER PRINCIPAL
+   ================================ */
+
 .container {
     max-width: 900px;
     margin: 0 auto;
 }
 
-/* Estilização do Cabeçalho */
+/* ================================
+   CABEÇALHO
+   ================================ */
+
 header {
     text-align: center;
     margin-bottom: 40px;
@@ -39,7 +87,10 @@ header p {
     font-size: 1.1rem;
 }
 
-/* Estilização dos Botões */
+/* ================================
+   BOTÕES
+   ================================ */
+
 .filtros {
     display: flex;
     justify-content: center;
@@ -72,14 +123,20 @@ button:hover {
     background-color: #d35400;
 }
 
-/* Estilização da Grade de Produtos */
+/* ================================
+   GRADE DE PRODUTOS
+   ================================ */
+
 #vitrine-cardapio {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 25px;
 }
 
-/* Estilização do Card Individual */
+/* ================================
+   CARD INDIVIDUAL
+   ================================ */
+
 .card {
     background: #ffffff;
     padding: 25px;
@@ -116,8 +173,12 @@ button:hover {
     color: #27ae60;
 }
 
-/* Estilização de Mensagens de Sistema */
-.loading, .erro {
+/* ================================
+   MENSAGENS
+   ================================ */
+
+.loading,
+.erro {
     grid-column: 1 / -1;
     text-align: center;
     font-size: 1.2rem;
@@ -129,4 +190,40 @@ button:hover {
     background: #fadbd8;
     border-radius: 8px;
     font-weight: bold;
+}
+
+/* ================================
+   RESPONSIVIDADE
+   ================================ */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 10px;
+    }
+
+    .cadastro-form {
+        margin-bottom: 25px;
+    }
+
+    header {
+        padding: 20px;
+    }
+
+    header h1 {
+        font-size: 1.7rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    .filtros {
+        flex-direction: column;
+    }
+
+    .filtros button {
+        width: 100%;
+    }
+
 }
