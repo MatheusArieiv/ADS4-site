@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<div class="cadastro-form">
+    <h3>Cadastrar Novo Item</h3>
+    <input type="text" id="novoNome" placeholder="Nome do Produto">
+    <select id="novaCategoria">
+        <option value="Lanche">Lanche</option>
+        <option value="Bebida">Bebida</option>
+        <option value="Acompanhamento">Acompanhamento</option>
+    </select>
+    <input type="number" id="novoPreco" placeholder="Preço (R$)">
+    <button onclick="cadastrarProduto()">Salvar Produto</button>
+</div>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,6 +88,32 @@
 
         // Carrega o cardápio completo automaticamente assim que a página abre
         window.onload = () => carregarCardapio('/api/cardapio');
+        function cadastrarProduto() {
+    const nome = document.getElementById('novoNome').value;
+    const categoria = document.getElementById('novaCategoria').value;
+    const preco = parseFloat(document.getElementById('novoPreco').value);
+
+    // Verificação básica para evitar envios em branco
+    if(!nome || isNaN(preco)) {
+        alert("Preencha todos os campos corretamente.");
+        return;
+    }
+
+    const novoProduto = { nome, categoria, preco };
+
+    fetch('/api/cardapio', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(novoProduto)
+    })
+    .then(resposta => resposta.json())
+    .then(dados => {
+        alert("Produto cadastrado com sucesso!");
+        carregarCardapio('/api/cardapio'); // Atualiza a tela
+    });
+}
     </script>
 </body>
 </html>
